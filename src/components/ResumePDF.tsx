@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
   
   // Left Column
   leftColumn: {
-    width: '35%',
+    width: '33%',
     backgroundColor: '#F9FAFB',
     borderRight: '2px solid #E5E7EB',
     padding: '32px 24px',
@@ -71,8 +71,8 @@ const styles = StyleSheet.create({
   
   // Right Column  
   rightColumn: {
-    width: '65%',
-    padding: '32px',
+    width: '67%',
+    padding: '28px 32px',
     backgroundColor: '#FFFFFF',
   },
   
@@ -95,8 +95,8 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     letterSpacing: 1,
     borderBottom: '2px solid #2563EB',
-    paddingBottom: 8,
-    marginBottom: 16,
+    paddingBottom: 6,
+    marginBottom: 12,
   },
   
   // Content Styles
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
   
   // Experience
   experienceItem: {
-    marginBottom: 20,
+    marginBottom: 16,
   },
   companyRole: {
     fontSize: 11,
@@ -338,7 +338,7 @@ export function ResumePDF({ data }: { data: Resume }) {
 
             {/* Selected Projects */}
             {!!data.projects?.length && (
-              <View style={{ marginTop: 24 }}>
+              <View style={{ marginTop: 20 }}>
                 <Text style={styles.rightSectionHeader}>Selected Projects</Text>
                 {data.projects.slice(0, 6).map((project, i) => (
                   <View key={i} style={styles.projectItem}>

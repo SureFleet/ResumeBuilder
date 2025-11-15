@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm, useFieldArray, FormProvider } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -11,31 +11,259 @@ import { Upload } from 'lucide-react'
 const STORAGE_KEY = 'resume-builder:data'
 
 // Sample data matching the preview page
+// const sampleData: Resume = {
+//   name: 'Jay Kishor Dwivedi',
+//   title: 'Mobile Architect/Lead Android Developer',
+//   email: 'jaidwivedi20@gmail.com',
+//   phone: '+91 8600227438',
+//   location: 'Hyderabad, India',
+//   links: [
+//     { label: 'LinkedIn', url: 'https://linkedin.com/in/jaydwivedi' },
+//     { label: 'GitHub', url: 'https://github.com/jaydwivedi' },
+//     { label: 'Portfolio', url: 'https://jaydwivedi.github.io' },
+//   ],
+//   summary:
+//     'Results-driven Mobile Architect/Lead Android Developer with 11+ years of experience designing, building, and optimizing complex native and cross-platform mobile applications for HR, fintech, news, and healthcare platforms. Expert in Kotlin, Jetpack Compose, Flutter, and React Native. Exceptional track record in leading technical teams, architecting scalable solutions, modernizing legacy systems, and driving high-impact automation initiatives using AI, low-code, and cloud technologies. Active contributor to architecture groups, solution design, and cross-platform R&D initiatives across multiple organizations.',
+//   expertise: [
+//     'Team Leadership & Mentorship',
+//     'Clean Architecture, MVVM, MVI, MVP',
+//     'Cross-Platform Strategy',
+//     'CI/CD (Jenkins, Bitrise)',
+//     'AI-assisted Development',
+//     'Low-Code Development (FlutterFlow)',
+//     'React Native & Flutter Adoption',
+//     'Agile Methodologies',
+//     'Cross-Functional Collaboration',
+//     'Performance Optimization',
+//     'Unit Testing & Test Automation',
+//     'Solution Design & Architecture',
+//     'R&D & Innovation',
+   
+//   ],
+//   skills: [
+//     {
+//       category: 'Languages',
+//       skills: ['Kotlin', 'Java', 'JavaScript', 'TypeScript', 'Python(Basic)', 'Dart(Basic)',],
+//     },
+//     {
+//       category: 'Mobile Development',
+//       skills: ['Android SDK', 'Jetpack Compose', 'React Native', 'Flutter', 'FlutterFlow', 'Xamarin Native', 'Expo'],
+//     },
+//     {
+//       category: 'Architecture & Design',
+//       skills: ['MVVM', 'Clean Architecture', 'Dagger Hilt', 'Koin', 'Dependency Injection', 'Solution Design'],
+//     },
+//     {
+//       category: 'Backend & Data',
+//       skills: ['Room', 'SQLite', 'PostgreSQL', 'Supabase', 'GraphQL', 'REST APIs', 'Retrofit', 'Coroutines', 'RxJava'],
+//     },
+//     {
+//       category: 'DevOps & Tools',
+//       skills: ['CI/CD (Jenkins, Bitrise)', 'Git/GitHub/Bitbucket', 'Jira', 'Confluence', 'SonarQube', 'AWS Monitoring','Firebase Crashlytics', 'FCM', 'GitHub Copilot'],
+//     },
+//     {
+//       category: 'Testing & Quality',
+//       skills: ['JUnit', 'Mockito', 'NUnit/XUnit', 'Unit Testing', 'Test Automation', 'Code Review'],
+//     },
+//     {
+//       category: 'Cloud & AI',
+//       skills: ['Firebase (Auth, FCM, Crashlytics)', 'Google APIs', 'AI Tools (Gemini, ChatGPT, Claude, GitHub Copilot)', 'Multi-agent Systems'],
+//     },
+//     {
+//       category: 'Additional Technologies',
+//       skills: ['WebRTC', 'TensorFlow', 'Vision APIs', 'Google Maps', 'JSON/XML', 'Contour'],
+//     },
+//   ],
+//   experience: [
+//     {
+//       company: 'Coforge Limited',
+//       location: 'Hyderabad',
+//       role: 'Sr. Technical Lead',
+//       startDate: 'Jan 2024',
+//       endDate: 'Present',
+//       bullets: [
+//         'Leading development and enhancement of HCM (Zenefits) Android app using Kotlin, Jetpack Compose, and Coroutines; improved UI efficiency and performance.',
+//         'Contributed to TriNet HR Platform App using React Native and Expo; ensured seamless cross-platform experience with backend integration.',
+//         'Developed and maintained YourPeople3 (Zenefits backend) in Python, focusing on push notification systems and migration from legacy API to V1 with FCM.',
+//         'Designed and implemented features for Banking apps, dashboards, and internal configurator apps using Flutter and FlutterFlow; reduced delivery time through low-code approaches.',
+//         'Actively integrated AI tools including GitHub Copilot, multi-agent systems, and AI models (Gemini 2.5, ChatGPT, Claude Sonnet) for intelligent code generation and productivity enhancement.',
+//         'Collaborated across teams in Agile environment, participating in R&D meetings, architecture discussions, and cross-platform module development.',
+//         'Managed project workflows using JIRA; handled Git repositories, code merges, and CI/CD pipelines for seamless integration.',
+//       ],
+//     },
+//     {
+//       company: 'Nityo Technology',
+//       location: 'Gurgaon',
+//       role: 'Sr. Android Developer',
+//       startDate: 'Mar 2023',
+//       endDate: 'Dec 2023',
+//       bullets: [
+//         'Architected and delivered critical modules for The Straits Times app (Kotlin, Compose); increased daily active user engagement.',
+//         'Attended weekly meetings for research and development tasks; contributed knowledge to cross-platform teams.',
+//         'Managed Jira for project task management and tracking following Agile methodologies.',
+//         'Handled Git server management, code merging, and CI/CD for project stability.',
+//         'Analyzed new requirements and developed new modules as key responsibility.',
+//       ],
+//     },
+//     {
+//       company: 'Riktam Technology',
+//       location: 'Hyderabad',
+//       role: 'Lead Android Developer',
+//       startDate: 'Jul 2022',
+//       endDate: 'Feb 2023',
+//       bullets: [
+//         'Led Universal Tennis App team as Lead Android Developer; managed sprint planning, code merges, CI/CD (Jenkins), and requirement analysis.',
+//         'Assembled weekly meetings for R&D tasks and contributed knowledge to cross-platform development efforts.',
+//         'Used Jira for project task management and tracking following Agile methodologies.',
+//         'Analyzed new requirements and developed modules enhancing real-time analytics and Google Maps integration.',
+//       ],
+//     },
+//     {
+//       company: 'T-Systems ICT',
+//       location: 'Pune',
+//       role: 'Lead Android Developer',
+//       startDate: 'Jun 2021',
+//       endDate: 'Jul 2022',
+//       bullets: [
+//         'Worked as Technical Lead and Sr. Android Developer in the Development Department.',
+//         'Managed Git server, code merging, and CI/CD for One App and Mesh Setup App.',
+//         'Assembled weekly meetings for R&D tasks; contributed knowledge to cross-platform teams.',
+//         'Led development of internal SDK demos and enhanced cloud connectivity with API integration.',
+//       ],
+//     },
+//     {
+//       company: 'Tata Consultancy Services',
+//       location: 'Pune',
+//       role: 'Lead Android Developer',
+//       startDate: 'Aug 2018',
+//       endDate: 'Jun 2021',
+//       bullets: [
+//         'Worked as Technical Lead and Sr. Android Developer; guided Mybpost app as solution designer.',
+//         'Part of Pune TCS DI Architecture group; explored and learned architecture skills with responsibilities for code/document review and release sign-off.',
+//         'Solution provider for project-related problems; led new technology adaptation and analysis for future initiatives.',
+//         'Architected features, analyzed client requirements, and ensured timely releases as Solution Designer.',
+//         'Distributed modules within team; handled sprint task board and future sprint features on Confluence and Jira.',
+//         'Advanced DevOps automation for CI/CD, version control, and user acceptance testing.',
+//         'Managed Git server and code merging; assembled weekly meetings for R&D tasks.',
+//       ],
+//     },
+//     {
+//       company: 'Borm Bruckmeier InfoTech',
+//       location: 'Pune',
+//       role: 'Sr. Android Developer',
+//       startDate: 'Feb 2014',
+//       endDate: 'Jul 2018',
+//       bullets: [
+//         'Worked as Android Developer in Research and Development Department.',
+//         'Analyzed new requirements and developed new modules; kept track of latest Android releases and checked compatibility issues.',
+//         'Created desktop application in Java for generating medical algorithms, scores, and calculator-type interactive tools.',
+//         'Enabled non-technical people (Medical editors) to design tools graphically and add components using UI.',
+//         'Understood and mapped client requirements/enhancements; implemented solutions providing improvements.',
+//         'Assembled weekly meetings for R&D tasks.',
+//       ],
+//     },
+//   ],
+//   education: [
+//     {
+//       school: 'IPS Academy, Indore',
+//       degree: 'MCA – Master of Computer Applications',
+//       location: 'Indore',
+//       startDate: '2011',
+//       endDate: '2014',
+//       details: [],
+//     },
+//     {
+//       school: 'Dr. VSICS, Kanpur',
+//       degree: 'BCA – Bachelor of Computer Applications',
+//       location: 'Kanpur',
+//       startDate: '2008',
+//       endDate: '2011',
+//       details: [],
+//     },
+//   ],
+//   projects: [
+//     {
+//       name: 'HCM (Zenefits) Android App',
+//       role: 'Sr. Technology Specialist',
+//       description: 'Human Capital Management app for Zenefits. Modernized HR operations with advanced push notifications via FCM, migrated legacy modules to V1 API.',
+//       technologies: ['Kotlin', 'Java', 'Compose', 'Coroutines', 'FCM', 'Python', 'Flask', 'REST APIs', 'GitHub', 'Jira', 'Agile'],
+//     },
+//     {
+//       name: 'TriNet HR Platform App',
+//       role: 'Sr. Technology Specialist',
+//       description: 'Cross-platform HR management solution for TriNet. Built modular components ensuring smooth backend integration and cross-functional Agile delivery.',
+//       technologies: ['React Native', 'Expo', 'TypeScript', 'REST APIs', 'GitHub', 'Jira', 'Agile'],
+//     },
+//     {
+//       name: 'Banking App, Dashboard & Configurator',
+//       role: 'Sr. Developer',
+//       description: 'Internal banking dashboard suite enabling workflow automation and real-time data visualization. Leveraged low-code tools for rapid delivery.',
+//       technologies: ['Flutter', 'FlutterFlow', 'Firebase', 'REST APIs', 'GitHub', 'Jira', 'Agile'],
+//     },
+//     {
+//       name: 'YourPeople3 (Zenefits Backend)',
+//       role: 'Sr. Technology Specialist',
+//       description: 'Backend modernization for Zenefits HR platform. Developed push notification module using FCM; migrated from legacy APIs to V1.',
+//       technologies: ['Python', 'Flask', 'FCM', 'REST APIs', 'Git', 'Jira', 'Agile'],
+//     },
+//     {
+//       name: 'The Straits Times',
+//       role: 'Developer / Technical Lead (Team: 8)',
+//       description: 'Leading digital news platform delivering breaking news. Led architecture and development using Compose; implemented unit testing and CI/CD with Bitrise.',
+//       technologies: ['Kotlin', 'Compose', 'Firebase Auth', 'Retrofit', 'MVVM', 'Koin', 'Mockito', 'Bitbucket', 'Jira', 'Bitrise', 'SQLite', 'Room', 'Coroutines'],
+//     },
+//     {
+//       name: 'Universal Tennis App',
+//       role: 'Developer / Technical Lead (Team: 4)',
+//       description: 'Global tennis platform connecting players through leagues and analytics. Managed feature design, task allocation, and CI/CD using Jenkins.',
+//       technologies: ['Kotlin', 'Firebase', 'Google Maps', 'Retrofit', 'MVVM', 'Dagger Hilt', 'Mockito', 'Jira', 'GIT', 'Jenkins', 'SQLite', 'Room', 'Coroutines'],
+//     },
+//   ],
+//   languages: ['English', 'Hindi'],
+//   certifications: [
+//     'Digital Mobile Computing: Android Foundation',
+//     'Process Agile Way of Working Foundation',
+//     'Adobe Qualified, Adobe Experience Platform',
+//   ],
+//   community: ['LinkedIn: Active profile and networking', 'Stack Overflow: Active contributor', 'GitHub: Portfolio with live apps and open-source material'],
+//   avatar: '/jay-avatar.jpg',
+// }
 const sampleData: Resume = {
   name: 'Jay Kishor Dwivedi',
   title: 'Mobile Architect/Lead Android Developer',
   email: 'jaidwivedi20@gmail.com',
   phone: '+91 8600227438',
   location: 'Hyderabad, India',
+
   links: [
     { label: 'LinkedIn', url: 'https://linkedin.com/in/jaydwivedi' },
     { label: 'GitHub', url: 'https://github.com/jaydwivedi' },
     { label: 'Portfolio', url: 'https://jaydwivedi.github.io' },
   ],
+
   summary:
     'Results-driven Mobile Architect/Lead Android Developer with 11+ years of experience designing, building, and optimizing complex native and cross-platform mobile applications for HR, fintech, news, and healthcare platforms. Expert in Kotlin, Jetpack Compose, Flutter, and React Native. Exceptional track record in leading technical teams, architecting scalable solutions, modernizing legacy systems, and driving high-impact automation initiatives using AI, low-code, and cloud technologies. Active contributor to architecture groups, solution design, and cross-platform R&D initiatives across multiple organizations.',
+
   expertise: [
-    'Clean Architecture, MVVM, MVI',
-    'Modularization & API Design',
+    'Team Leadership & Mentorship',
+    'Clean Architecture, MVVM, MVI, MVP',
     'Cross-Platform Strategy',
     'CI/CD (Jenkins, Bitrise)',
     'AI-assisted Development',
-    'Stakeholder Alignment',
+    'Low-Code Development (FlutterFlow)',
+    'React Native & Flutter Adoption',
+    'Agile Methodologies',
+    'Cross-Functional Collaboration',
+    'Performance Optimization',
+    'Unit Testing & Test Automation',
+    'Solution Design & Architecture',
+    'R&D & Innovation',
   ],
+
   skills: [
     {
       category: 'Languages',
-      skills: ['Kotlin', 'Java', 'Python', 'Dart', 'JavaScript', 'TypeScript', 'C#', 'HTML/CSS'],
+      skills: ['Kotlin', 'Java', 'JavaScript', 'TypeScript', 'Python(Basic)', 'Dart(Basic)'],
     },
     {
       category: 'Mobile Development',
@@ -47,11 +275,11 @@ const sampleData: Resume = {
     },
     {
       category: 'Backend & Data',
-      skills: ['Room', 'SQLite', 'PostgreSQL', 'Supabase', 'REST APIs', 'Retrofit', 'Coroutines', 'RxJava'],
+      skills: ['Room', 'SQLite', 'PostgreSQL', 'Supabase', 'GraphQL', 'REST APIs', 'Retrofit', 'Coroutines', 'RxJava'],
     },
     {
       category: 'DevOps & Tools',
-      skills: ['CI/CD (Jenkins, Bitrise)', 'Git/GitHub/Bitbucket', 'Jira', 'Confluence', 'SonarQube', 'AWS Monitoring'],
+      skills: ['CI/CD (Jenkins, Bitrise)', 'Git/GitHub/Bitbucket', 'Jira', 'Confluence', 'SonarQube', 'AWS Monitoring', 'Firebase Crashlytics', 'FCM', 'GitHub Copilot'],
     },
     {
       category: 'Testing & Quality',
@@ -66,12 +294,13 @@ const sampleData: Resume = {
       skills: ['WebRTC', 'TensorFlow', 'Vision APIs', 'Google Maps', 'JSON/XML', 'Contour'],
     },
   ],
+
   experience: [
     {
       company: 'Coforge Limited',
       location: 'Hyderabad',
-      role: 'Sr. Technology Specialist',
-      startDate: 'Jan 2025',
+      role: 'Sr. Technical Lead',
+      startDate: 'Jan 2024',
       endDate: 'Present',
       bullets: [
         'Leading development and enhancement of HCM (Zenefits) Android app using Kotlin, Jetpack Compose, and Coroutines; improved UI efficiency and performance.',
@@ -88,7 +317,7 @@ const sampleData: Resume = {
       location: 'Gurgaon',
       role: 'Sr. Android Developer',
       startDate: 'Mar 2023',
-      endDate: 'Dec 2024',
+      endDate: 'Dec 2023',
       bullets: [
         'Architected and delivered critical modules for The Straits Times app (Kotlin, Compose); increased daily active user engagement.',
         'Attended weekly meetings for research and development tasks; contributed knowledge to cross-platform teams.',
@@ -155,6 +384,7 @@ const sampleData: Resume = {
       ],
     },
   ],
+
   education: [
     {
       school: 'IPS Academy, Indore',
@@ -173,6 +403,7 @@ const sampleData: Resume = {
       details: [],
     },
   ],
+
   projects: [
     {
       name: 'HCM (Zenefits) Android App',
@@ -211,15 +442,23 @@ const sampleData: Resume = {
       technologies: ['Kotlin', 'Firebase', 'Google Maps', 'Retrofit', 'MVVM', 'Dagger Hilt', 'Mockito', 'Jira', 'GIT', 'Jenkins', 'SQLite', 'Room', 'Coroutines'],
     },
   ],
+
   languages: ['English', 'Hindi'],
+
   certifications: [
     'Digital Mobile Computing: Android Foundation',
     'Process Agile Way of Working Foundation',
     'Adobe Qualified, Adobe Experience Platform',
   ],
-  community: ['LinkedIn: Active profile and networking', 'Stack Overflow: Active contributor', 'GitHub: Portfolio with live apps and open-source material'],
+
+  community: [
+    'LinkedIn: Active profile and networking',
+    'Stack Overflow: Active contributor',
+    'GitHub: Portfolio with live apps and open-source material'
+  ],
+
   avatar: '/jay-avatar.jpg',
-}
+};
 
 export function ResumeForm({
   initial,

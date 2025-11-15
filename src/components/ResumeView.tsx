@@ -177,7 +177,7 @@ export function ResumeView({ data }: { data: Resume }) {
       </div>
 
       {/* Two Column Layout */}
-      <div className="grid grid-cols-[35%_65%] gap-0">
+      <div className="grid grid-cols-[33%_67%] gap-0">
         {/* Left Column */}
         <div className="border-r-2 border-gray-200 bg-gray-50 px-6 py-8">
           <div className="space-y-7">
@@ -279,14 +279,14 @@ export function ResumeView({ data }: { data: Resume }) {
         </div>
 
         {/* Right Column */}
-        <div className="px-8 py-8">
+        <div className="px-8 py-7">
           {/* Professional Experience */}
           {!!data.experience?.length && (
             <section>
-              <h3 className="mb-4 border-b-2 border-blue-600 pb-2 text-[13pt] font-bold uppercase tracking-wider text-blue-700">
+              <h3 className="mb-3 border-b-2 border-blue-600 pb-1.5 text-[13pt] font-bold uppercase tracking-wider text-blue-700">
                 Professional Experience
               </h3>
-              <div className="space-y-5">
+              <div className="space-y-4">
                 {data.experience.map((exp, i) => (
                   <div key={i}>
                     <div className="mb-1">
@@ -315,11 +315,11 @@ export function ResumeView({ data }: { data: Resume }) {
 
           {/* Selected Projects */}
           {!!data.projects?.length && (
-            <section className="mt-8">
-              <h3 className="mb-4 border-b-2 border-blue-600 pb-2 text-[13pt] font-bold uppercase tracking-wider text-blue-700">
+            <section className="mt-7">
+              <h3 className="mb-3 border-b-2 border-blue-600 pb-1.5 text-[13pt] font-bold uppercase tracking-wider text-blue-700">
                 Selected Projects
               </h3>
-              <div className="space-y-3">
+              <div className="space-y-2.5">
                 {data.projects.slice(0, 6).map((project, i) => (
                   <div key={i} className="flex items-start leading-snug">
                     <span className="mr-2 mt-0.5 font-bold text-blue-600">-</span>
